@@ -26,6 +26,14 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    // toys information
+    const toysCollection = client.db("allToys").collection("toys");
+    app.get("/toys", async (req, res) => {
+      const cursor = toysCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     //  6 car all  information
     const sportsCollection = client.db("sportsCar").collection("sports");
     const regularCarCollection = client.db("regular-car").collection("regular");
