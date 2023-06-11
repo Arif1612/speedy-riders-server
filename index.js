@@ -28,6 +28,7 @@ async function run() {
 
     const sportsCollection = client.db("sportsCar").collection("sports");
     const regularCarCollection = client.db("regular-car").collection("regular");
+    const CarCollection = client.db("police-car").collection("car");
 
     app.get("/sports", async (req, res) => {
       const cursor = sportsCollection.find();
@@ -36,6 +37,11 @@ async function run() {
     });
     app.get("/regular", async (req, res) => {
       const cursor = regularCarCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    app.get("/car", async (req, res) => {
+      const cursor = CarCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
