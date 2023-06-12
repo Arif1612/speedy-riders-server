@@ -59,6 +59,37 @@ async function run() {
 
     const bookingCollection = client.db("allToys").collection("bookings");
 
+    // all toys
+    app.get("/bookings", async (req, res) => {
+      const cursor = bookingCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // find booking using id from database
+    app.get("/bookings/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+
+      const options = {
+        // Include only the `title` and `imdb` fields in the returned document
+        projection: {
+          name: 1,
+          sellerName: 1,
+          pictureUrl: 1,
+          email: 1,
+          subCategory:1,
+          price: 1,
+          rating: 1,
+          quantity:1,
+          description: 1,
+        },
+      };
+
+      const result = await bookingCollection.findOne(query, options);
+      res.send(result);
+    });
+
     // booking user email data will get from here
     app.get("/bookings", async (req, res) => {
       // console.log(req.query.email);
@@ -130,7 +161,13 @@ async function run() {
 
       const options = {
         // Include only the `title` and `imdb` fields in the returned document
-        projection: { name: 1, picture: 1, price: 1, rating: 1 },
+        projection: {
+          name: 1,
+          picture: 1,
+          price: 1,
+          rating: 1,
+          description: 1,
+        },
       };
 
       const result = await sportsCollection.findOne(query, options);
@@ -144,7 +181,13 @@ async function run() {
 
       const options = {
         // Include only the `title` and `imdb` fields in the returned document
-        projection: { name: 1, picture: 1, price: 1, rating: 1 },
+        projection: {
+          name: 1,
+          picture: 1,
+          price: 1,
+          rating: 1,
+          description: 1,
+        },
       };
 
       const result = await regularCarCollection.findOne(query, options);
@@ -159,7 +202,13 @@ async function run() {
 
       const options = {
         // Include only the `title` and `imdb` fields in the returned document
-        projection: { name: 1, picture: 1, price: 1, rating: 1 },
+        projection: {
+          name: 1,
+          picture: 1,
+          price: 1,
+          rating: 1,
+          description: 1,
+        },
       };
 
       const result = await CarCollection.findOne(query, options);
