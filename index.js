@@ -28,9 +28,52 @@ async function run() {
 
     // toys information
     const toysCollection = client.db("allToys").collection("toys");
+
     app.get("/toys", async (req, res) => {
       const cursor = toysCollection.find();
       const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/toys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+
+      const options = {
+        // Include only the `title` and `imdb` fields in the returned document
+        projection: {
+          seller: 1,
+          toyName: 1,
+          subCategory: 1,
+          price: 1,
+          availableQuantity: 1,
+        },
+      };
+
+      const result = await toysCollection.findOne(query, options);
+      res.send(result);
+    });
+
+    // toys booking
+    // amra j booking krtese client theke oita aikhane server site a passe
+
+    const bookingCollection = client.db("allToys").collection("bookings");
+
+    app.get("/bookings", async (req, res) => {
+      console.log(req.query.email);
+      let query = {};
+      if (req.query?.email) {
+        query = {email: req.query.email}
+      }
+      const result = await bookingCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // taking information from client and also send to the database
+    app.post("/bookings", async (req, res) => {
+      const booking = req.body;
+      console.log(booking);
+      const result = await bookingCollection.insertOne(booking);
       res.send(result);
     });
 
