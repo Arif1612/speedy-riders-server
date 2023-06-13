@@ -60,11 +60,11 @@ async function run() {
     const bookingCollection = client.db("allToys").collection("bookings");
 
     // all toys
-    app.get("/bookings", async (req, res) => {
-      const cursor = bookingCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-    });
+    // app.get("/bookings", async (req, res) => {
+    //   const cursor = bookingCollection.find();
+    //   const result = await cursor.toArray();
+    //   res.send(result);
+    // });
 
     // find booking using id from database
     app.get("/bookings/:id", async (req, res) => {
@@ -118,17 +118,20 @@ async function run() {
     });
 
     // update with specific id
-    app.patch("/bookings/:id", async (req, res) => {
+    app.put("/bookings/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
       const updatedBooking = req.body;
       console.log(updatedBooking);
-      const updateDoc = {
+      const toyBooking = {
         $set: {
-          status: updatedBooking.status,
+          price: updatedBooking.price,
+          quantity: updatedBooking.quantity,
+          description: updatedBooking.description
         },
       };
-      const result = await bookingCollection.updateOne(filter, updateDoc);
+      const result = await bookingCollection.updateOne(filter, toyBooking,options);
       res.send(result);
     });
 
