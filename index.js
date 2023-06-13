@@ -78,10 +78,10 @@ async function run() {
           sellerName: 1,
           pictureUrl: 1,
           email: 1,
-          subCategory:1,
+          subCategory: 1,
           price: 1,
           rating: 1,
-          quantity:1,
+          quantity: 1,
           description: 1,
         },
       };
@@ -128,10 +128,14 @@ async function run() {
         $set: {
           price: updatedBooking.price,
           quantity: updatedBooking.quantity,
-          description: updatedBooking.description
+          description: updatedBooking.description,
         },
       };
-      const result = await bookingCollection.updateOne(filter, toyBooking,options);
+      const result = await bookingCollection.updateOne(
+        filter,
+        toyBooking,
+        options
+      );
       res.send(result);
     });
 
